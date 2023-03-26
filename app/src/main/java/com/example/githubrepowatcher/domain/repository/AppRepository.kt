@@ -5,23 +5,15 @@ import com.example.githubrepowatcher.domain.models.RepoDetails
 import com.example.githubrepowatcher.domain.models.UserInfo
 
 interface AppRepository {
-    suspend fun getRepositories(): List<Repo> {
-        TODO()
-    }
+    suspend fun getRepositories(): List<Repo>
 
-    suspend fun getRepository(repoId: String): RepoDetails {
-        TODO()
-    }
+    suspend fun getRepository(repoId: String): RepoDetails
 
     suspend fun getRepositoryReadme(
         ownerName: String,
         repositoryName: String,
         branchName: String
-    ): String {
-        TODO()
-    }
+    ): String
 
-    suspend fun signIn(token: String): UserInfo {
-        TODO()
-    }
+    suspend fun signIn(token: String): UserInfo
 }

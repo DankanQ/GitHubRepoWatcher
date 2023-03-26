@@ -1,7 +1,7 @@
 package com.example.githubrepowatcher.presentation.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.githubrepowatcher.R
 
 class MainActivity : AppCompatActivity() {

@@ -1,5 +1,5 @@
 package com.example.githubrepowatcher.domain.models
 
-class UserInfo {
-
-}
+data class UserInfo(
+    val login: String
+)
