@@ -1,7 +1,8 @@
-package com.example.githubrepowatcher
+package com.example.githubrepowatcher.presentation.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.githubrepowatcher.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
