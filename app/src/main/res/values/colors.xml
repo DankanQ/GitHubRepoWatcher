@@ -7,7 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    
+
+    <color name="mirage">#161B22</color>
+
     <color name="dark_gunmetal">#21262D</color>
     <color name="blue_jeans">#58A6FF</color>
     <color name="alabama_crimson">#B00020</color>
