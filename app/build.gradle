@@ -89,6 +89,9 @@ dependencies {
     implementation "com.google.dagger:dagger:$dagger"
     kapt "com.google.dagger:dagger-compiler:$dagger"
 
+    // Security
+    implementation 'androidx.security:security-crypto:1.1.0-alpha05'
+
     // Test dependencies
     testImplementation "junit:junit:$junit"
     androidTestImplementation "androidx.test.ext:junit:$androidTestJunit"
