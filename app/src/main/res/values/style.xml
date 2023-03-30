@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="InputTextAppearance" parent="TextAppearance.Design.Hint">
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+    <style name="CounterTextStyle" parent="TextAppearance.Design.Counter">
+        <item name="android:textSize">12sp</item>
+    </style>
+</resources>

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GitHubRepoWatcher</string>
+    <string name="sign_in">Sign in</string>
+    <string name="github_logo">GitHub logo</string>
+    <string name="token_hint">Personal access token</string>
+    <string name="invalid_token">Invalid token</string>
 </resources>
