@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="bg">#0d1117</color>
+
     <color name="mirage">#161B22</color>
 
     <color name="dark_gunmetal">#21262D</color>
