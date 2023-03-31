@@ -10,8 +10,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.githubrepowatcher.R
 import com.example.githubrepowatcher.databinding.FragmentAuthBinding
+import com.example.githubrepowatcher.domain.models.KeyValueStorage
+import com.example.githubrepowatcher.presentation.viewmodels.SessionViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -21,7 +25,9 @@ class AuthFragment : Fragment() {
     private val binding: FragmentAuthBinding
         get() = _binding ?: throw RuntimeException("FragmentAuthBinding is null")
 
-    private val token = "asd123"
+    private val sessionViewModel: SessionViewModel by activityViewModels()
+
+    private val authToken = "asd123"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +40,18 @@ class AuthFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (sessionViewModel.getAuthToken() != null) {
+            Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
+            sessionViewModel.saveAuthToken(KeyValueStorage(authToken))
+            val repoFragment = RepoFragment.newInstance()
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container_view, repoFragment)
+                .commit()
+        } else {
+            Toast.makeText(requireContext(), "Let's sign in", Toast.LENGTH_SHORT).show()
+        }
+
 
         val originalPaddingTop = binding.etToken.paddingTop
         binding.etToken.addTextChangedListener(object : TextWatcher {
@@ -55,8 +73,13 @@ class AuthFragment : Fragment() {
             lifecycleScope.launch(Dispatchers.Main) {
                 delay(1000)
                 Log.d("SignIn", "Loading...")
-                if (binding.etToken.text.toString() == token) {
+                if (binding.etToken.text.toString() == authToken) {
                     Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
+                    sessionViewModel.saveAuthToken(KeyValueStorage(authToken))
+                    val repoFragment = RepoFragment.newInstance()
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container_view, repoFragment)
+                        .commit()
                 } else {
                     Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
                     binding.tilToken.error = " "
@@ -77,5 +100,11 @@ class AuthFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        fun newInstance(): Fragment {
+            return AuthFragment()
+        }
     }
 }
