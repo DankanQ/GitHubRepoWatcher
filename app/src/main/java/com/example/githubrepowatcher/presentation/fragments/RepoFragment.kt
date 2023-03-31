@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import com.example.githubrepowatcher.R
 import com.example.githubrepowatcher.databinding.FragmentRepoBinding
 import com.example.githubrepowatcher.presentation.viewmodels.SessionViewModel
@@ -15,7 +15,7 @@ class RepoFragment : Fragment() {
     private val binding: FragmentRepoBinding
         get() = _binding ?: throw RuntimeException("FragmentRepoBinding is null")
 
-    private lateinit var sessionViewModel: SessionViewModel
+    private val sessionViewModel: SessionViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +28,7 @@ class RepoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sessionViewModel = ViewModelProvider(this)[SessionViewModel::class.java]
+
         binding.tvAuthToken.text = sessionViewModel.getAuthToken()?.authToken ?: "EMPTY_AUTH_TOKEN"
         binding.bLogout.setOnClickListener {
             sessionViewModel.clearAuthToken()
