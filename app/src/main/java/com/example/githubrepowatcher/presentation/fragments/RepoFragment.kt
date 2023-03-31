@@ -29,7 +29,7 @@ class RepoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sessionViewModel = ViewModelProvider(this)[SessionViewModel::class.java]
-        binding.tvAuthToken.text = sessionViewModel.getAuthToken()!!.authToken
+        binding.tvAuthToken.text = sessionViewModel.getAuthToken()?.authToken ?: "EMPTY_AUTH_TOKEN"
         binding.bLogout.setOnClickListener {
             sessionViewModel.clearAuthToken()
             val authFragment = AuthFragment.newInstance()
