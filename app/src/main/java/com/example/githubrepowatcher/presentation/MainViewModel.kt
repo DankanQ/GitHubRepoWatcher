@@ -1,12 +1,12 @@
-package com.example.githubrepowatcher.presentation.viewmodels
+package com.example.githubrepowatcher.presentation
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.example.githubrepowatcher.data.repository.SessionRepositoryImpl
+import com.example.githubrepowatcher.data.session.SessionRepositoryImpl
 import com.example.githubrepowatcher.domain.models.KeyValueStorage
 import com.example.githubrepowatcher.domain.usecases.SessionUseCase
 
-class SessionViewModel(context: Application) : AndroidViewModel(context) {
+class MainViewModel(context: Application) : AndroidViewModel(context) {
     private val sessionRepositoryImpl = SessionRepositoryImpl(context)
 
     private val sessionUseCase = SessionUseCase(sessionRepositoryImpl)
