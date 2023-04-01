@@ -1,8 +1,7 @@
-package com.example.githubrepowatcher.data.repository
+package com.example.githubrepowatcher.data.session
 
 import android.content.Context
 import android.os.Build
-import com.example.githubrepowatcher.data.sessionmanager.SessionManager
 import com.example.githubrepowatcher.domain.models.KeyValueStorage
 import com.example.githubrepowatcher.domain.repository.SessionRepository
 import java.io.File

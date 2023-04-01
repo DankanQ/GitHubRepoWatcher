@@ -1,4 +1,4 @@
-package com.example.githubrepowatcher.data.sessionmanager
+package com.example.githubrepowatcher.data.session
 
 import android.content.Context
 import android.os.Build
@@ -47,10 +47,6 @@ sealed interface SessionManager {
             load(null)
         }
 
-        private val encryptCipher = Cipher.getInstance(TRANSFORMATION).apply {
-            init(Cipher.ENCRYPT_MODE, getKey())
-        }
-
         private fun decryptCipher(iv: ByteArray): Cipher {
             return Cipher.getInstance(TRANSFORMATION).apply {
                 init(Cipher.DECRYPT_MODE, getKey(), IvParameterSpec(iv))
@@ -82,6 +78,9 @@ sealed interface SessionManager {
         }
 
         fun encrypt(bytes: ByteArray, outputStream: OutputStream): ByteArray {
+            val encryptCipher = Cipher.getInstance(TRANSFORMATION).apply {
+                init(Cipher.ENCRYPT_MODE, getKey())
+            }
             val encryptedBytes = encryptCipher.doFinal(bytes)
             outputStream.use {
                 it.write(encryptCipher.iv.size)
