@@ -64,22 +64,24 @@ class AuthFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                authViewModel.hideError()
+                authViewModel.shouldHideError()
             }
         })
         binding.bSignIn.setOnClickListener {
-            lifecycleScope.launch {
-                val authToken = binding.etToken.text.toString()
-                authViewModel.onSignButtonPressed(authToken)
-                authViewModel.actions.first { action ->
-                    when(action) {
-                        is AuthViewModel.Action.ShowError -> {
-                            showErrorDialog()
+            val authToken = binding.etToken.text.toString()
+            with(authViewModel) {
+                setAuthToken(authToken)
+                onSignButtonPressed()
+                lifecycleScope.launch {
+                    actions.first { action ->
+                        when(action) {
+                            is AuthViewModel.Action.ShowError ->
+                                showErrorDialog()
+                            is AuthViewModel.Action.RouteToMain ->
+                                sessionCallback.startSession(authToken)
                         }
-                        is AuthViewModel.Action.RouteToMain ->
-                            sessionCallback.startSession(authToken)
+                        true
                     }
-                    true
                 }
             }
         }
@@ -90,30 +92,26 @@ class AuthFragment : Fragment() {
             Log.d("Username", it.login)
         }
         authViewModel.state.observe(viewLifecycleOwner) {
-            if (it is AuthViewModel.State.InvalidInput) {
-                showError()
-            } else {
-                hideError()
+            when(it) {
+                is AuthViewModel.State.Idle -> {
+                    binding.progressBar.isVisible = false
+                }
+                is AuthViewModel.State.Loading -> {
+                    binding.progressBar.isVisible = true
+                }
+                is AuthViewModel.State.InvalidInput -> {
+                    with(binding) {
+                        binding.progressBar.isVisible = false
+                        tilToken.error = " "
+                        tilToken.isErrorEnabled = true
+                        tvHelperText.isVisible = true
+                    }
+                }
             }
         }
     }
 
-    private fun showError() {
-        with(binding) {
-            tilToken.error = " "
-            tilToken.isErrorEnabled = true
-            tvHelperText.isVisible = true
-        }
-    }
-
-    private fun hideError() {
-        with(binding) {
-            tilToken.error = null
-            tilToken.isErrorEnabled = false
-            tvHelperText.isVisible = false
-        }
-    }
-
+    // TODO: create dialog
     private fun showErrorDialog() {
         Toast.makeText(requireContext(), "Error Dialog", Toast.LENGTH_SHORT).show()
     }

@@ -19,10 +19,9 @@ class AuthViewModel(context: Application) : AndroidViewModel(context) {
 
     private val signInUseCase = SignInUseCase(repository)
 
-    private val _token = MutableLiveData<String>()
-    val token: LiveData<String> = _token
+    private val token = MutableLiveData<String>()
 
-    private val _state: MutableLiveData<State> = MutableLiveData(State.Loading)
+    private val _state: MutableLiveData<State> = MutableLiveData()
     val state: LiveData<State> = _state
 
     private val _actions = MutableSharedFlow<Action>()
@@ -31,12 +30,17 @@ class AuthViewModel(context: Application) : AndroidViewModel(context) {
     private val _userInfo = MutableLiveData<UserInfo>()
     val userInfo: LiveData<UserInfo> = _userInfo
 
-    fun onSignButtonPressed(token: String) {
+    fun setAuthToken(authToken: String) {
+        token.value = authToken
+    }
+
+    fun onSignButtonPressed() {
         viewModelScope.launch {
-            _state.value = State.Loading
+            _state.value = State.Idle
             try {
-                _userInfo.postValue(signInUseCase.invoke("Bearer $token"))
-                _token.value = token
+                _state.value = State.Loading
+                val authToken = token.value.toString()
+                _userInfo.postValue(signInUseCase.invoke("Bearer $authToken"))
                 _state.value = State.Idle
                 _actions.emit(Action.RouteToMain)
             } catch (e: Exception) {
@@ -44,13 +48,13 @@ class AuthViewModel(context: Application) : AndroidViewModel(context) {
                 if (e is HttpException && e.code() == 401) {
                     _state.value = State.InvalidInput(e.message())
                 } else {
-                    _actions.emit(Action.ShowError(e.message ?: "Unknown error"))
+                    _actions.emit(Action.ShowError(e.message ?: "Network error"))
                 }
             }
         }
     }
 
-    fun hideError() {
+    fun shouldHideError() {
         _state.value = State.Idle
     }
 
