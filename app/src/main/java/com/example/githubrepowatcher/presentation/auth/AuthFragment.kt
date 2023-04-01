@@ -94,7 +94,12 @@ class AuthFragment : Fragment() {
         authViewModel.state.observe(viewLifecycleOwner) {
             when(it) {
                 is AuthViewModel.State.Idle -> {
-                    binding.progressBar.isVisible = false
+                    with(binding) {
+                        binding.progressBar.isVisible = false
+                        tilToken.error = null
+                        tilToken.isErrorEnabled = false
+                        tvHelperText.isVisible = false
+                    }
                 }
                 is AuthViewModel.State.Loading -> {
                     binding.progressBar.isVisible = true
