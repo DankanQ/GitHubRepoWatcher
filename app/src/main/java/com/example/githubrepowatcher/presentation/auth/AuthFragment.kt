@@ -13,23 +13,34 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.githubrepowatcher.presentation.RepoWatcherApp
 import com.example.githubrepowatcher.databinding.FragmentAuthBinding
 import com.example.githubrepowatcher.presentation.SessionCallback
+import com.example.githubrepowatcher.presentation.ViewModelFactory
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class AuthFragment : Fragment() {
     private var _binding: FragmentAuthBinding? = null
     private val binding: FragmentAuthBinding
         get() = _binding ?: throw RuntimeException("FragmentAuthBinding is null")
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
     private val authViewModel by lazy {
-        ViewModelProvider(this)[AuthViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[AuthViewModel::class.java]
+    }
+
+    private val component by lazy {
+        (requireActivity().application as RepoWatcherApp).component
     }
 
     private lateinit var sessionCallback: SessionCallback
 
     override fun onAttach(context: Context) {
+        component.inject(this)
         super.onAttach(context)
         if (context is SessionCallback) {
             sessionCallback = context
@@ -74,7 +85,7 @@ class AuthFragment : Fragment() {
                 onSignButtonPressed()
                 lifecycleScope.launch {
                     actions.first { action ->
-                        when(action) {
+                        when (action) {
                             is AuthViewModel.Action.ShowError ->
                                 showErrorDialog()
                             is AuthViewModel.Action.RouteToMain ->
@@ -92,7 +103,7 @@ class AuthFragment : Fragment() {
             Log.d("Username", it.login)
         }
         authViewModel.state.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is AuthViewModel.State.Idle -> {
                     with(binding) {
                         binding.progressBar.isVisible = false

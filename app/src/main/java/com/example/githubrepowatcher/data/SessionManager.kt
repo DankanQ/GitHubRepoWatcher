@@ -1,4 +1,4 @@
-package com.example.githubrepowatcher.data.session
+package com.example.githubrepowatcher.data
 
 import android.content.Context
 import android.os.Build
@@ -14,10 +14,13 @@ import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
+import javax.inject.Inject
 
 sealed interface SessionManager {
     // SessionManager with using EncryptedSharedPreferences for API 21
-    class SessionManagerAPI21(context: Context) : SessionManager {
+    class SessionManagerAPI21 @Inject constructor(
+        context: Context
+    ) : SessionManager {
         private val authTokenKey = "auth_token_key"
         private val sharedPrefName = "key_value_storage"
 
@@ -40,7 +43,7 @@ sealed interface SessionManager {
 
     // SessionManager with using KeyStore for API 23+
     @RequiresApi(Build.VERSION_CODES.M)
-    class SessionManagerAPI23 : SessionManager {
+    class SessionManagerAPI23 @Inject constructor() : SessionManager {
         private val keyStoreFileName = "keystore.jks"
 
         private val keyStore = KeyStore.getInstance("AndroidKeyStore").apply {

@@ -1,14 +1,16 @@
-package com.example.githubrepowatcher.data.session
+package com.example.githubrepowatcher.data.repository
 
 import android.content.Context
 import android.os.Build
 import com.example.githubrepowatcher.domain.models.KeyValueStorage
 import com.example.githubrepowatcher.domain.repository.SessionRepository
+import com.example.githubrepowatcher.data.SessionManager
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import javax.inject.Inject
 
-class SessionRepositoryImpl(
+class SessionRepositoryImpl @Inject constructor(
     private val context: Context
 ) : SessionRepository {
     private val sessionManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
