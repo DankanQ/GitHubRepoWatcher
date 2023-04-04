@@ -1,6 +1,6 @@
 package com.example.githubrepowatcher.data.repository
 
-import android.content.Context
+import android.app.Application
 import android.os.Build
 import com.example.githubrepowatcher.domain.models.KeyValueStorage
 import com.example.githubrepowatcher.domain.repository.SessionRepository
@@ -11,12 +11,12 @@ import java.io.FileOutputStream
 import javax.inject.Inject
 
 class SessionRepositoryImpl @Inject constructor(
-    private val context: Context
+    private val application: Application
 ) : SessionRepository {
     private val sessionManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         SessionManager.SessionManagerAPI23()
     } else {
-        SessionManager.SessionManagerAPI21(context)
+        SessionManager.SessionManagerAPI21(application)
     }
 
     override fun saveAuthToken(keyValueStorage: KeyValueStorage) {
@@ -24,7 +24,7 @@ class SessionRepositoryImpl @Inject constructor(
             with(sessionManager as SessionManager.SessionManagerAPI23) {
                 val bytes = keyValueStorage.authToken!!.encodeToByteArray()
                 val file = File(
-                    context.filesDir,
+                    application.filesDir,
                     getKeyStoreFileName()
                 )
                 if (!file.exists()) {
@@ -49,7 +49,7 @@ class SessionRepositoryImpl @Inject constructor(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             with(sessionManager as SessionManager.SessionManagerAPI23) {
                 val file = File(
-                    context.filesDir,
+                    application.filesDir,
                     getKeyStoreFileName()
                 )
                 return if (file.exists()) {
@@ -79,7 +79,7 @@ class SessionRepositoryImpl @Inject constructor(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             with(sessionManager as SessionManager.SessionManagerAPI23) {
                 val file = File(
-                    context.filesDir,
+                    application.filesDir,
                     getKeyStoreFileName()
                 )
                 if (file.exists()) file.delete()

@@ -6,17 +6,16 @@ import com.example.githubrepowatcher.presentation.auth.AuthViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import dagger.multibindings.StringKey
 
 @Module
 interface ViewModelModule {
     @IntoMap
-    @StringKey("MainViewModel")
+    @ViewModelKey(MainViewModel::class)
     @Binds
     fun bindMainViewModel(impl: MainViewModel): ViewModel
 
     @IntoMap
-    @StringKey("AuthViewModel")
+    @ViewModelKey(AuthViewModel::class)
     @Binds
     fun bindAuthViewModel(impl: AuthViewModel): ViewModel
 }

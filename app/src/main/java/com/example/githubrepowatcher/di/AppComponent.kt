@@ -1,8 +1,6 @@
 package com.example.githubrepowatcher.di
 
 import android.app.Application
-import com.example.githubrepowatcher.presentation.MainActivity
-import com.example.githubrepowatcher.presentation.auth.AuthFragment
 import dagger.BindsInstance
 import dagger.Component
 
@@ -10,20 +8,18 @@ import dagger.Component
 @Component(
     modules = [
         DataModule::class,
-        DomainModule::class,
-        SessionModule::class,
-        ViewModelModule::class
+        SessionModule::class
     ]
 )
 interface AppComponent {
-    fun inject(activity: MainActivity)
+    fun mainComponentFactory(): MainComponent.Factory
 
-    fun inject(fragment: AuthFragment)
+    fun tokenComponentFactory(): TokenComponent.Factory
 
     @Component.Factory
     interface AppComponentFactory {
         fun create(
-            @BindsInstance application: Application
+            @BindsInstance application: Application,
         ): AppComponent
     }
 }

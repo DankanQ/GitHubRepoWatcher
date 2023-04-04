@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity(), SessionCallback {
 
     private val component by lazy {
         (application as RepoWatcherApp).component
+            .mainComponentFactory()
+            .create()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

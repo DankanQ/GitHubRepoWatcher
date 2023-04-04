@@ -1,6 +1,6 @@
 package com.example.githubrepowatcher.data
 
-import android.content.Context
+import android.app.Application
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
@@ -19,18 +19,18 @@ import javax.inject.Inject
 sealed interface SessionManager {
     // SessionManager with using EncryptedSharedPreferences for API 21
     class SessionManagerAPI21 @Inject constructor(
-        context: Context
+        application: Application
     ) : SessionManager {
         private val authTokenKey = "auth_token_key"
         private val sharedPrefName = "key_value_storage"
 
         // MasterKey for encrypting and decrypting
-        private val masterKey = MasterKey.Builder(context)
+        private val masterKey = MasterKey.Builder(application)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
 
         private val sharedPreferences = EncryptedSharedPreferences.create(
-            context,
+            application,
             sharedPrefName,
             masterKey,
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
