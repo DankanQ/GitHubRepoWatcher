@@ -34,6 +34,8 @@ class RepoFragment : Fragment(R.layout.fragment_repo) {
 
     private lateinit var sessionCallback: SessionCallback
 
+    private val repoAdapter = RepoAdapter()
+
     override fun onAttach(context: Context) {
         component.inject(this)
         super.onAttach(context)
@@ -48,11 +50,20 @@ class RepoFragment : Fragment(R.layout.fragment_repo) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentRepoBinding.bind(view)
 
-        binding.bLogout.setOnClickListener {
+        binding.tbRepo.ibLogout.setOnClickListener {
             sessionCallback.endSession()
         }
 
-        binding.tvAuthToken.text = args.token
-        Log.d("AuthToken", repoViewModel.getAuthToken())
+        binding.rvRepo.adapter = repoAdapter
+
+        observeViewModel()
+        repoViewModel.loadRepositories()
+    }
+
+    private fun observeViewModel() {
+        repoViewModel.repositories.observe(viewLifecycleOwner) {
+            repoAdapter.submitList(it)
+            Log.d("Repo", it.toString())
+        }
     }
 }
