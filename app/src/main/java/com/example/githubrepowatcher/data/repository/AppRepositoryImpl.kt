@@ -1,17 +1,17 @@
 package com.example.githubrepowatcher.data.repository
 
-import com.example.githubrepowatcher.data.mapper.GitHubMapper
-import com.example.githubrepowatcher.data.network.ApiFactory
+import com.example.githubrepowatcher.data.mapper.Mapper
+import com.example.githubrepowatcher.data.network.ApiService
 import com.example.githubrepowatcher.domain.models.Repo
 import com.example.githubrepowatcher.domain.models.RepoDetails
 import com.example.githubrepowatcher.domain.models.UserInfo
 import com.example.githubrepowatcher.domain.repository.AppRepository
+import javax.inject.Inject
 
-class AppRepositoryImpl : AppRepository {
-    private val apiService = ApiFactory.apiService
-
-    private val gitHubMapper = GitHubMapper()
-
+class AppRepositoryImpl @Inject constructor(
+    private val apiService: ApiService,
+    private val mapper: Mapper
+) : AppRepository {
     override suspend fun getRepositories(): List<Repo> {
         TODO("Not yet implemented")
     }
@@ -29,7 +29,7 @@ class AppRepositoryImpl : AppRepository {
     }
 
     override suspend fun signIn(token: String): UserInfo {
-        return gitHubMapper.mapUserInfoDtoToModel(
+        return mapper.mapUserInfoDtoToModel(
             apiService.signIn(token)
         )
     }

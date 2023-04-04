@@ -7,13 +7,24 @@ import com.example.githubrepowatcher.R
 import com.example.githubrepowatcher.domain.models.KeyValueStorage
 import com.example.githubrepowatcher.presentation.auth.AuthFragment
 import com.example.githubrepowatcher.presentation.repo.RepoFragment
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), SessionCallback {
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
     private val mainViewModel by lazy {
-        ViewModelProvider(this)[MainViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+    }
+
+    private val component by lazy {
+        (application as RepoWatcherApp).component
+            .mainComponentFactory()
+            .create()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
