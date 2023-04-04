@@ -5,4 +5,6 @@
     <string name="github_logo">GitHub logo</string>
     <string name="token_hint">Personal access token</string>
     <string name="invalid_token">Invalid token</string>
+    <string name="repositories">Repositories</string>
+    <string name="logout_button">logout button</string>
 </resources>
