@@ -7,10 +7,10 @@ import javax.inject.Inject
 class SessionUseCase @Inject constructor(
     private val sessionRepository: SessionRepository
 ) {
-    fun saveAuthToken(keyValueStorage: KeyValueStorage) =
+    fun saveToken(keyValueStorage: KeyValueStorage) =
         sessionRepository.saveAuthToken(keyValueStorage)
 
-    fun getAuthToken(): KeyValueStorage? = sessionRepository.getAuthToken()
+    fun getToken(): KeyValueStorage? = sessionRepository.getAuthToken()
 
     fun clearAuthToken() = sessionRepository.clearAuthToken()
 }
