@@ -1,6 +1,7 @@
 package com.example.githubrepowatcher.presentation.repo
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.githubrepowatcher.databinding.ItemRepoBinding
@@ -21,9 +22,10 @@ class RepoAdapter : ListAdapter<Repo, RepoViewHolder>(RepoDiffCallback) {
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
         val repo = getItem(position)
         with(holder.binding) {
-            tvRepositoryName.text = repo.name
+            tvRepoName.text = repo.name
             tvLanguage.text = repo.language
             tvDescription.text = repo.description
+            if (position == itemCount - 1) itemSeparator.visibility = View.INVISIBLE
             root.setOnClickListener { onRepoClick?.invoke(position) }
         }
     }

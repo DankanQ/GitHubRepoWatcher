@@ -18,7 +18,7 @@ class RepoViewModel @Inject constructor(
 
     fun loadRepositories() {
         val repositories = arrayListOf<Repo>()
-        repeat(10) {
+        repeat(5) {
             repositories.add(
                 Repo(
                     "moko-web3",

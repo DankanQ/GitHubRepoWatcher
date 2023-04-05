@@ -7,4 +7,10 @@
     <string name="invalid_token">Invalid token</string>
     <string name="repositories">Repositories</string>
     <string name="logout_button">logout button</string>
+
+    // Item Decoration
+    <dimen name="space_size">6dp</dimen>
+    <dimen name="top_margin_first_item">9dp</dimen>
+    <dimen name="bottom_margin_last_item">9dp</dimen>
+    <dimen name="top_margin_other_items">4dp</dimen>
 </resources>

@@ -56,6 +56,12 @@ class RepoFragment : Fragment(R.layout.fragment_repo) {
 
         binding.rvRepo.adapter = repoAdapter
 
+        binding.rvRepo.addItemDecoration(
+            ItemDecoration(
+                requireContext()
+            )
+        )
+
         observeViewModel()
         repoViewModel.loadRepositories()
     }
