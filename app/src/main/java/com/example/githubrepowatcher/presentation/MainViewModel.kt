@@ -29,8 +29,11 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun saveAuthToken(keyValueStorage: KeyValueStorage) =
+    fun saveAuthToken(authToken: String) {
+        val keyValueStorage = KeyValueStorage()
+        keyValueStorage.authToken = authToken
         sessionUseCase.saveToken(keyValueStorage)
+    }
 
     fun clearAuthToken() = sessionUseCase.clearAuthToken()
 

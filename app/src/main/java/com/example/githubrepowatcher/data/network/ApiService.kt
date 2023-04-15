@@ -4,6 +4,7 @@ import com.example.githubrepowatcher.data.network.models.RepoDetailsDto
 import com.example.githubrepowatcher.data.network.models.RepoDto
 import com.example.githubrepowatcher.data.network.models.UserInfoDto
 import kotlinx.serialization.json.JsonObject
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path
@@ -17,13 +18,11 @@ interface ApiService {
 
     @GET("repositories/{repoId}")
     suspend fun getRepository(
-        @Header(HEADER_PARAM_TOKEN) token: String,
         @Path(PATH_PARAM_REPO_ID) repoId: String
     ): RepoDetailsDto
 
     @GET("repos/{ownerName}/{repositoryName}/readme")
     suspend fun getRepositoryReadme(
-        @Header(HEADER_PARAM_TOKEN) token: String,
         @Path(PATH_PARAM_OWNER) ownerName: String,
         @Path(PATH_PARAM_REPOSITORY) repositoryName: String,
         @Query(QUERY_PARAM_BRANCH) branchName: String
@@ -32,7 +31,7 @@ interface ApiService {
     @GET("user")
     suspend fun signIn(
         @Header(HEADER_PARAM_TOKEN) token: String
-    ): UserInfoDto
+    ): Response<UserInfoDto>
 
     companion object {
         private const val HEADER_PARAM_TOKEN = "Authorization"

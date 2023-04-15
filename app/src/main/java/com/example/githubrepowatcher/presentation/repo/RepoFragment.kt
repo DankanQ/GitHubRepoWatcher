@@ -2,11 +2,9 @@ package com.example.githubrepowatcher.presentation.repo
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.navArgs
 import com.example.githubrepowatcher.R
 import com.example.githubrepowatcher.databinding.FragmentRepoBinding
 import com.example.githubrepowatcher.presentation.RepoWatcherApp
@@ -17,8 +15,6 @@ import javax.inject.Inject
 class RepoFragment : Fragment(R.layout.fragment_repo) {
     private lateinit var binding: FragmentRepoBinding
 
-    private val args by navArgs<RepoFragmentArgs>()
-
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
@@ -28,11 +24,11 @@ class RepoFragment : Fragment(R.layout.fragment_repo) {
 
     private val component by lazy {
         (requireActivity().application as RepoWatcherApp).component
-            .tokenComponentFactory()
-            .create(args.token)
     }
 
     private lateinit var sessionCallback: SessionCallback
+
+    private val repoAdapter = RepoAdapter()
 
     override fun onAttach(context: Context) {
         component.inject(this)
@@ -48,11 +44,24 @@ class RepoFragment : Fragment(R.layout.fragment_repo) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentRepoBinding.bind(view)
 
-        binding.bLogout.setOnClickListener {
+        binding.tbRepo.ibLogout.setOnClickListener {
             sessionCallback.endSession()
         }
 
-        binding.tvAuthToken.text = args.token
-        Log.d("AuthToken", repoViewModel.getAuthToken())
+        binding.rvRepo.adapter = repoAdapter
+
+        binding.rvRepo.addItemDecoration(
+            ItemDecoration(
+                requireContext()
+            )
+        )
+
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        repoViewModel.repositories.observe(viewLifecycleOwner) {
+            repoAdapter.submitList(it)
+        }
     }
 }
