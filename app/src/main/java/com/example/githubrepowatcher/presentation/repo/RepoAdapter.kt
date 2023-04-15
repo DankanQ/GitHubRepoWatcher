@@ -3,6 +3,7 @@ package com.example.githubrepowatcher.presentation.repo
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import com.example.githubrepowatcher.databinding.ItemRepoBinding
 import com.example.githubrepowatcher.domain.models.Repo
@@ -24,7 +25,8 @@ class RepoAdapter : ListAdapter<Repo, RepoViewHolder>(RepoDiffCallback) {
         with(holder.binding) {
             tvRepoName.text = repo.name
             tvLanguage.text = repo.language
-            tvDescription.text = repo.description
+            if (repo.description.isNotBlank()) tvDescription.text = repo.description
+            else tvDescription.isVisible = false
             if (position == itemCount - 1) itemSeparator.visibility = View.INVISIBLE
             root.setOnClickListener { onRepoClick?.invoke(position) }
         }

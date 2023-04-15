@@ -32,8 +32,6 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
 
     private val component by lazy {
         (requireActivity().application as RepoWatcherApp).component
-            .mainComponentFactory()
-            .create()
     }
 
     private lateinit var sessionCallback: SessionCallback

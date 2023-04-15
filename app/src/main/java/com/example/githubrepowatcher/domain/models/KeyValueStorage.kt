@@ -1,5 +1,9 @@
 package com.example.githubrepowatcher.domain.models
 
-data class KeyValueStorage(
-    var authToken: String?
-)
+import com.example.githubrepowatcher.di.AppScope
+import javax.inject.Inject
+
+@AppScope
+class KeyValueStorage @Inject constructor() {
+    var authToken: String? = null
+}

@@ -6,10 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.githubrepowatcher.domain.models.UserInfo
 import com.example.githubrepowatcher.domain.usecases.SignInUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import javax.inject.Inject
 
@@ -37,7 +39,9 @@ class AuthViewModel @Inject constructor(
             try {
                 _state.value = State.Loading
                 val authToken = token.value.toString()
-                _userInfo.postValue(signInUseCase.invoke("Bearer $authToken"))
+                withContext(Dispatchers.IO) {
+                    _userInfo.postValue(signInUseCase(authToken)!!)
+                }
                 _state.value = State.Idle
                 _actions.emit(Action.RouteToMain)
             } catch (e: Exception) {

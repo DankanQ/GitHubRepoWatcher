@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.githubrepowatcher.R
-import com.example.githubrepowatcher.domain.models.KeyValueStorage
 import com.example.githubrepowatcher.presentation.auth.AuthFragmentDirections
 import javax.inject.Inject
 
@@ -19,8 +18,6 @@ class MainActivity : AppCompatActivity(), SessionCallback {
 
     private val component by lazy {
         (application as RepoWatcherApp).component
-            .mainComponentFactory()
-            .create()
     }
 
     private val navController by lazy {
@@ -37,7 +34,7 @@ class MainActivity : AppCompatActivity(), SessionCallback {
     }
 
     override fun startSession(authToken: String) {
-        mainViewModel.saveAuthToken(KeyValueStorage(authToken))
+        mainViewModel.saveAuthToken(authToken)
         navController.navigate(
             AuthFragmentDirections.actionAuthFragmentToRepoFragment(authToken)
         )

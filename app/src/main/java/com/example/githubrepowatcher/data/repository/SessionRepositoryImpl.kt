@@ -3,15 +3,16 @@ package com.example.githubrepowatcher.data.repository
 import android.app.Application
 import android.os.Build
 import com.example.githubrepowatcher.domain.models.KeyValueStorage
-import com.example.githubrepowatcher.domain.repository.SessionRepository
 import com.example.githubrepowatcher.data.SessionManager
+import com.example.githubrepowatcher.domain.repository.SessionRepository
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import javax.inject.Inject
 
 class SessionRepositoryImpl @Inject constructor(
-    private val application: Application
+    private val application: Application,
+    private val keyValueStorage: KeyValueStorage
 ) : SessionRepository {
     private val sessionManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         SessionManager.SessionManagerAPI23()
@@ -57,7 +58,8 @@ class SessionRepositoryImpl @Inject constructor(
                         val authToken = decrypt(
                             inputStream = inputStream
                         ).decodeToString()
-                        KeyValueStorage(authToken)
+                        keyValueStorage.authToken = authToken
+                        return keyValueStorage
                     }
                 } else {
                     null
@@ -70,7 +72,8 @@ class SessionRepositoryImpl @Inject constructor(
                     getAuthTokenKey(),
                     null
                 ) ?: return null
-                return KeyValueStorage(authToken)
+                keyValueStorage.authToken = authToken
+                return keyValueStorage
             }
         }
     }
